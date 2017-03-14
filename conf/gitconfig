@@ -1,0 +1,33 @@
+[user]
+	email = masneyb@onstation.org
+	name = Brian Masney
+	signingkey = A101C1B5
+[push]
+	default = simple
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[sendemail]
+	smtpuser = masneyb
+	smtpserver = onstation.org
+	smtpencryption = tls
+	smtpserverport = 587
+	suppresscc = self
+[core]
+	attributesFile = ~/.gitattributes
+[diff "bz2"]
+	binary = true
+	textconv = bzcat
+[diff "gzip"]
+	binary = true
+	textconv = zcat
+[diff "tar"]
+	binary = true
+	textconv = tar --to-stdout -xf
+[diff "tar-bz2"]
+	binary = true
+	textconv = tar --to-stdout -xjf
+[diff "zip"]
+	binary = true
+	textconv = unzip -p

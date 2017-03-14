@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Eclipse (3G)
+Comment=Eclipse Integrated Development Environment
+Icon=eclipse
+Exec=/usr/bin/eclipse -vmargs -Xmx3072M
+Terminal=false
+Categories=Development;IDE;Java;

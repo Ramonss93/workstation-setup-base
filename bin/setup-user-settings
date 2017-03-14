@@ -1,0 +1,121 @@
+#!/bin/bash -e
+
+# setup-user-settings - Brian's basic user setup
+# Copyright (C) 2012-2017 Brian Masney <masneyb@onstation.org>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+setup_symlink()
+{
+  SRC=$1
+  DEST=$2
+
+  if [ ! -e "${SRC}" ] ; then
+    echo "Source ${SRC} does not exist!"
+    exit 1
+  fi
+
+  if [ -L "${DEST}" ] && [ ! -e "${DEST}" ] ; then
+    echo "Removing invalid symlink ${DEST}"
+    rm -f "${DEST}"
+  fi
+
+  if [ ! -L "${DEST}" ] ; then
+    if [ -e "${DEST}" ] ; then
+      echo "Destination ${DEST} already exists!"
+      exit 1
+    fi
+    ln -s "${SRC}" "${DEST}"
+    echo "Setting up ${SRC} -> ${DEST}"
+  else
+    echo "OK: ${SRC} -> ${DEST}"
+  fi
+}
+
+rmdir ~/Desktop/ || true
+rmdir ~/Documents/ || true
+rmdir ~/Downloads/ || true
+rmdir ~/Music/ || true
+rmdir ~/Pictures/ || true
+rmdir ~/Public/ || true
+rmdir ~/Templates/ || true
+rmdir ~/Videos/ || true
+
+BASE_DIR="${HOME}"/data/workstation-setup
+CONF_DIR="${BASE_DIR}"/conf
+BIN_DIR="${BASE_DIR}"/bin
+APP_DIR="${BASE_DIR}"/applications
+
+# Scripts
+mkdir -p "${HOME}"/bin
+setup_symlink "${BIN_DIR}"/docker-cleanup "${HOME}"/bin/docker-cleanup
+
+setup_symlink "${CONF_DIR}"/gitattributes "${HOME}"/.gitattributes
+setup_symlink "${CONF_DIR}"/gitconfig "${HOME}"/.gitconfig
+setup_symlink "${CONF_DIR}"/gpsman-dir "${HOME}"/.gpsman-dir
+setup_symlink "${CONF_DIR}"/minirc.dfl "${HOME}"/.minirc.dfl
+setup_symlink "${CONF_DIR}"/vim "${HOME}"/.vim
+
+# Custom launchers
+DESKTOP_BASE_DIR="${HOME}"/.local/share/applications
+mkdir -p "${DESKTOP_BASE_DIR}"
+
+setup_symlink "${APP_DIR}"/eclipse-brian.desktop "${DESKTOP_BASE_DIR}"/eclipse-brian.desktop
+setup_symlink "${APP_DIR}"/shotwell-brian.desktop "${DESKTOP_BASE_DIR}"/shotwell-brian.desktop
+
+echo "Updating dconf registry"
+
+dconf write /org/gnome/shell/favorite-apps "['gnome-terminal.desktop', 'firefox.desktop', 'org.gnome.Nautilus.desktop', 'gimp.desktop', 'shotwell-brian.desktop', 'eclipse-brian.desktop']"
+
+dconf write /org/gnome/settings-daemon/peripherals/touchpad/tap-to-click true
+dconf write /org/gnome/desktop/interface/clock-show-date true
+
+# Terminal settings
+dconf write /org/gnome/terminal/legacy/keybindings/prev-tab "'<Shift>Left'"
+dconf write /org/gnome/terminal/legacy/keybindings/next-tab "'<Shift>Right'"
+dconf write /org/gnome/terminal/legacy/keybindings/move-tab-left "'<Primary><Shift>Left'"
+dconf write /org/gnome/terminal/legacy/keybindings/move-tab-right "'<Primary><Shift>Right'"
+dconf write /org/gnome/terminal/legacy/menu-accelerator-enabled false
+dconf write /org/gnome/terminal/legacy/default-show-menubar false
+PROFILE=$(dconf list /org/gnome/terminal/legacy/profiles:/ | tail -n 1 | sed s^/^^)
+if [ "${PROFILE}" = "" ] ; then
+	echo "Unable to determine gnome terminal profile name."
+	echo "Pull up the profile and disable the terminal bell to create the dconf entries."
+	exit 1
+fi
+dconf write /org/gnome/terminal/legacy/profiles:/"${PROFILE}"/use-theme-colors false
+dconf write /org/gnome/terminal/legacy/profiles:/"${PROFILE}"/foreground-color "'rgb(0,255,0)'"
+dconf write /org/gnome/terminal/legacy/profiles:/"${PROFILE}"/background-color "'rgb(0,0,0)'"
+dconf write /org/gnome/terminal/legacy/profiles:/"${PROFILE}"/visible-name "'masneyb'"
+dconf write /org/gnome/terminal/legacy/profiles:/"${PROFILE}"/scrollback-lines "10000"
+
+# Shotwell
+dconf write /org/yorba/shotwell/preferences/files/import-dir "'/home/masneyb/data/photos/BrianMasney'"
+dconf write /org/yorba/shotwell/preferences/files/commit-metadata true
+dconf write /org/yorba/shotwell/preferences/files/auto-import true
+dconf write /org/yorba/shotwell/preferences/ui/pin-toolbar-state true
+
+# Images
+dconf write /org/gnome/desktop/screensaver/picture-uri \
+	"'file://${BASE_DIR}/images/simon.jpg'"
+dconf write /org/gnome/desktop/background/picture-uri \
+	"'file://${BASE_DIR}/images/simon.jpg'"
+
+sudo cp "${BASE_DIR}"/images/masneyb-user-icon.png /var/lib/AccountsService/icons/masneyb
+sudo cp "${BASE_DIR}"/images/masneyb-user-icon.desktop /var/lib/AccountsService/users/masneyb
+
+gsettings set org.gnome.software download-updates false
+gsettings set org.gnome.desktop.session idle-delay 300
+gsettings set org.gnome.desktop.screensaver lock-delay 300
+gsettings set org.gnome.settings-daemon.plugins.power ambient-enabled false

@@ -1,0 +1,120 @@
+#!/bin/bash -ev
+
+# install-packages - Brian's Fedora 25 workstation setup
+# Copyright (C) 2012-2017 Brian Masney <masneyb@onstation.org>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+USER=masneyb
+
+dnf update -y
+
+APPS="abiword aspell aspell-en audacity cdw chromium dia gftp ghex gpsman gnucash gnumeric \
+      gnupg2 goldendict gramps minicom octave pandoc pandoc-pdf pass pwgen revelation sox \
+      stardict-dic-en stellarium vim wifi-radar wkhtmltopdf"
+ARDUINO="arduino fritzing"
+BROWSER="mozilla-https-everywhere w3m"
+CAVING="proj-devel wine wxGTK-devel"
+DB="mysql mysql-server perl-DBD-SQLite postgis postgresql postgresql-server"
+GIS="gdal-devel libgeotiff-devel mapserver qgis"
+GRAPHICS="exiv2 gimp gscan2pdf hugin ImageMagick inkscape intel-gpu-tools libsane-hpaio \
+          luminance-hdr ncurses-devel perl-Image-ExifTool qiv simple-scan xsane-gimp"
+IM="finch pidgin"
+JAVA="eclipse-color-theme eclipse-jdt eclipse-mpc eclipse-linuxtools java-1.8.0-openjdk \
+      java-1.8.0-openjdk-devel java-1.8.0-openjdk-javadoc java-1.8.0-openjdk-src"
+MEDIA="gstreamer-plugins-good gstreamer-plugins-bad-free-extras gstreamer-plugins-bad-free \
+       gstreamer-plugin-crystalhd gstreamer1-vaapi youtube-dl"
+MISC="awscli cinnamon coccinelle docker docker-compose fuse-sshfs \
+      gnome-shell-extension-alternate-tab gnome-shell-extension-remove-bluetooth-icon \
+      gnome-tweak-tool kernel-devel nasm perl-File-Slurp perl-Template-Toolkit qrencode \
+      ShellCheck gcc-arm-linux-gnu ncurses-devel openssl-devel elfutils-libelf-devel \
+      python3-PyYAML screen"
+NETWORK_TOOLS="nmap wireshark wireshark-gnome"
+PHONE="android-tools heimdall"
+RC="git git-email tig subversion mercurial cvs"
+SHOTWELL_DEVEL="autoconf-archive libgphoto2-devel vala libgee-devel libgexiv2-devel \
+                gstreamer1-devel gstreamer1-plugins-base-devel gtk3-devel libgudev1-devel \
+                LibRaw-devel libsoup-devel libxml2 rest-devel sqlite-devel libsqlite3x-devel \
+                webkitgtk4-devel gnome-doc-utils json-glib-devel yelp-tools \
+                libappstream-glib-devel libtool gcr-devel"
+SYSTOOLS="colorhug-client gcc gcc-c++ inxi kubernetes-client ltrace strace livecd-tools lsof \
+          paris-traceroute rfkill rpmdevtools smartmontools powerline powertop redhat-lsb-core
+          selinux-policy-sandbox sharutils sparse speedtest-cli tofrodos vim-plugin-powerline \
+          wipe x11vnc"
+TEX="texlive-changepage texlive-morefloats texlive-hyphenat texlive-blindtext texlive-adjustbox \
+     texlive-helvetic.noarch"
+VIRT="libvirt-daemon-kvm python3-boto virt-manager"
+
+dnf install -y ${APPS} ${ARDUINO} ${BROWSER} ${CAVING} ${DB} ${GIS} ${GRAPHICS} \
+               ${IM} ${JAVA} ${MEDIA} ${MISC} ${NETWORK_TOOLS} ${PHONE} ${RC} \
+               ${SHOTWELL_DEVEL} ${SYSTOOLS} ${TEX} ${VIRT}
+
+dnf group install -y "Books and Guides" "C Development Tools and Libraries" "Cloud Infrastructure" \
+                     "Design Suite" "Development Tools" "Engineering and Scientific" \
+                     "Fedora Eclipse" "LibreOffice" "RPM Development Tools" "Security Lab" \
+                     "System Tools" "Virtualization"
+
+systemctl disable avahi-daemon.service sshd.service
+systemctl enable powertop.service
+systemctl start powertop.service
+
+usermod -a -G wireshark "${USER}"
+usermod -a -G dialout "${USER}"
+
+cat > "/etc/security/limits.d/99-${USER}.conf" << __EOF__
+${USER} soft nofile 4096
+${USER} hard nofile 10240
+__EOF__
+
+echo "blacklist uvcvideo" > /etc/modprobe.d/blacklist-uvcvideo.conf
+
+cat > /etc/fuse.conf << __EOF__
+user_allow_other
+__EOF__
+
+postgresql-setup initdb || true
+service postgresql start
+sudo -u postgres createuser -s "${USER}" || true
+
+cat > /etc/my.cnf.d/localhost-only.cnf << __EOF__
+[mysqld]
+bind-address = 127.0.0.1
+__EOF__
+
+if [ -d /home/masneyb/data/code/shotwell/ ] ; then
+	cat > /home/masneyb/data/code/shotwell/thumbnailer/shotwell-video-thumbnailer << __EOF__
+#!/bin/bash
+ffmpegthumbnailer -i "\${1}" -c png -s320-1 -o-
+__EOF__
+	chmod 755 /home/masneyb/data/code/shotwell/thumbnailer/shotwell-video-thumbnailer
+fi
+
+# RPM Fusion repository
+RPM_FUSION_FREE_INSTALLED=$(rpm -qa | grep rpmfusion-free-release | wc -l)
+if [ "${RPM_FUSION_FREE_INSTALLED}" = '0' ] ; then
+	echo "Getting ready to download RPM fusion repository. Press enter to continue or Crtl-C to stop"
+	read -r
+	FEDORA_RELEASE=$(lsb_release -r | awk '{print $2}')
+	rpm -Uvh "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_RELEASE}.noarch.rpm"
+	echo "Keys are at http://rpmfusion.org/keys"
+	echo ""
+	echo "Importing GPG key 0x6806A9CB:"
+	echo " Userid     : \"RPM Fusion free repository for Fedora (25) <rpmfusion-buildsys@lists.rpmfusion.org>\""
+	echo " Fingerprint: 286F 52F7 E9D4 7B46 3EAD D8AB A1E5 4A0F 6806 A9CB"
+	echo " From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-25"
+	dnf update
+fi
+
+dnf install -y gstreamer-plugins-bad gstreamer-plugins-ugly gstreamer1-libav gstreamer-ffmpeg \
+               mplayer mencoder exfat-utils ffmpeg fuse-exfat ffmpegthumbnailer x264
