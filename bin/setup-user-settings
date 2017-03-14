@@ -37,6 +37,7 @@ DESKTOP_BASE_DIR="${HOME}"/.local/share/applications
 # Scripts
 mkdir -p "${HOME}"/bin
 setup_symlink "${BIN_DIR}"/docker-cleanup "${HOME}"/bin/docker-cleanup
+setup_symlink "${BIN_DIR}"/rs "${HOME}"/bin/rs
 
 setup_symlink /dev/null "${HOME}"/.bash_history
 setup_symlink "${CONF_DIR}"/bash_logout "${HOME}"/.bash_logout
