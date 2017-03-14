@@ -32,6 +32,7 @@ BASE_DIR="${HOME}"/data/workstation-setup-base
 CONF_DIR="${BASE_DIR}"/conf
 BIN_DIR="${BASE_DIR}"/bin
 APP_DIR="${BASE_DIR}"/applications
+DESKTOP_BASE_DIR="${HOME}"/.local/share/applications
 
 # Scripts
 mkdir -p "${HOME}"/bin
@@ -44,9 +45,7 @@ setup_symlink "${CONF_DIR}"/minirc.dfl "${HOME}"/.minirc.dfl
 setup_symlink "${CONF_DIR}"/vim "${HOME}"/.vim
 
 # Custom launchers
-DESKTOP_BASE_DIR="${HOME}"/.local/share/applications
 mkdir -p "${DESKTOP_BASE_DIR}"
-
 setup_symlink "${APP_DIR}"/eclipse-brian.desktop "${DESKTOP_BASE_DIR}"/eclipse-brian.desktop
 setup_symlink "${APP_DIR}"/shotwell-brian.desktop "${DESKTOP_BASE_DIR}"/shotwell-brian.desktop
 
