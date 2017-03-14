@@ -38,6 +38,10 @@ DESKTOP_BASE_DIR="${HOME}"/.local/share/applications
 mkdir -p "${HOME}"/bin
 setup_symlink "${BIN_DIR}"/docker-cleanup "${HOME}"/bin/docker-cleanup
 
+setup_symlink /dev/null "${HOME}"/.bash_history
+setup_symlink "${CONF_DIR}"/bash_logout "${HOME}"/.bash_logout
+setup_symlink "${CONF_DIR}"/bash_profile "${HOME}"/.bash_profile
+setup_symlink "${CONF_DIR}"/bash_profile "${HOME}"/.bashrc
 setup_symlink "${CONF_DIR}"/gitattributes "${HOME}"/.gitattributes
 setup_symlink "${CONF_DIR}"/gitconfig "${HOME}"/.gitconfig
 setup_symlink "${CONF_DIR}"/gpsman-dir "${HOME}"/.gpsman-dir
