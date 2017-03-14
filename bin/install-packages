@@ -68,6 +68,8 @@ dnf group install -y "Books and Guides" "C Development Tools and Libraries" "Clo
 systemctl disable avahi-daemon.service sshd.service
 systemctl enable powertop.service
 systemctl start powertop.service
+systemctl start docker.service
+systemctl enable docker.service
 
 usermod -a -G wireshark "${USER}"
 usermod -a -G dialout "${USER}"
