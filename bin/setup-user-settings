@@ -103,3 +103,9 @@ gsettings set org.gnome.settings-daemon.plugins.power ambient-enabled false
 mkdir -p ~/.local/share/gnome-shell/extensions/
 cp -dpRv "${BASE_DIR}"/gnome-extensions/pixel-saver\@deadalnix.me/ \
 	~/.local/share/gnome-shell/extensions/
+
+mkdir -p "${HOME}"/.gimp-2.8/scripts
+mkdir -p "${HOME}"/.gimp-2.8/plug-ins
+setup_symlink "${BASE_DIR}"/gimp-scripts/DivideScannedImages.scm \
+	"${HOME}"/.gimp-2.8/scripts/DivideScannedImages.scm
+setup_symlink "${BASE_DIR}"/gimp-plugins/deskew "${HOME}"/.gimp-2.8/plug-ins/deskew
