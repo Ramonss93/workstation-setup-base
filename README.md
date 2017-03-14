@@ -1,4 +1,4 @@
-# Workstation setup
+# Base Workstation Setup
 
 This is my base Fedora 25 workstation setup with any sensitive information removed.
 I've used these scripts since Fedora 18 came out to automatically provision my

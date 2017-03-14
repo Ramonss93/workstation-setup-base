@@ -94,6 +94,13 @@ cat > /etc/my.cnf.d/localhost-only.cnf << __EOF__
 bind-address = 127.0.0.1
 __EOF__
 
+# Disable network connectivity test
+CONN_TEST=/usr/lib/NetworkManager/conf.d/20-connectivity-fedora.conf
+if [ `lsattr ${CONN_TEST} | cut -b5` != 'i' ] ; then
+        > ${CONN_TEST}
+        chattr +i ${CONN_TEST}
+fi
+
 if [ -d /home/masneyb/data/code/shotwell/ ] ; then
 	cat > /home/masneyb/data/code/shotwell/thumbnailer/shotwell-video-thumbnailer << __EOF__
 #!/bin/bash

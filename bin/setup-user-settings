@@ -16,32 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-setup_symlink()
-{
-  SRC=$1
-  DEST=$2
-
-  if [ ! -e "${SRC}" ] ; then
-    echo "Source ${SRC} does not exist!"
-    exit 1
-  fi
-
-  if [ -L "${DEST}" ] && [ ! -e "${DEST}" ] ; then
-    echo "Removing invalid symlink ${DEST}"
-    rm -f "${DEST}"
-  fi
-
-  if [ ! -L "${DEST}" ] ; then
-    if [ -e "${DEST}" ] ; then
-      echo "Destination ${DEST} already exists!"
-      exit 1
-    fi
-    ln -s "${SRC}" "${DEST}"
-    echo "Setting up ${SRC} -> ${DEST}"
-  else
-    echo "OK: ${SRC} -> ${DEST}"
-  fi
-}
+BASEDIR=$(dirname $0)
+. "${BASEDIR}"/common
 
 rmdir ~/Desktop/ || true
 rmdir ~/Documents/ || true
@@ -52,7 +28,7 @@ rmdir ~/Public/ || true
 rmdir ~/Templates/ || true
 rmdir ~/Videos/ || true
 
-BASE_DIR="${HOME}"/data/workstation-setup
+BASE_DIR="${HOME}"/data/workstation-setup-base
 CONF_DIR="${BASE_DIR}"/conf
 BIN_DIR="${BASE_DIR}"/bin
 APP_DIR="${BASE_DIR}"/applications
