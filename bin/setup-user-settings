@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-BASEDIR=$(dirname $0)
-. "${BASEDIR}"/common
+SCR_DIR=$(dirname $0)
+. "${SCR_DIR}"/common
 
 rmdir ~/Desktop/ || true
 rmdir ~/Documents/ || true
