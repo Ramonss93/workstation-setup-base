@@ -1,7 +1,6 @@
 [user]
 	email = masneyb@onstation.org
 	name = Brian Masney
-	signingkey = A101C1B5
 [push]
 	default = simple
 [filter "lfs"]
