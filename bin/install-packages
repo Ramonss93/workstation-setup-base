@@ -54,7 +54,7 @@ SYSTOOLS="colorhug-client gcc gcc-c++ inxi kubernetes-client ltrace strace livec
           wipe x11vnc"
 TEX="texlive-changepage texlive-morefloats texlive-hyphenat texlive-blindtext texlive-adjustbox \
      texlive-helvetic.noarch"
-VIRT="libvirt-daemon-kvm python3-boto virt-manager"
+VIRT="libvirt-daemon-kvm python3-boto python3-boto3 virt-manager"
 
 dnf install -y ${APPS} ${ARDUINO} ${BROWSER} ${CAVING} ${DB} ${GIS} ${GRAPHICS} \
                ${IM} ${JAVA} ${MEDIA} ${MISC} ${NETWORK_TOOLS} ${PHONE} ${RC} \
@@ -63,7 +63,8 @@ dnf install -y ${APPS} ${ARDUINO} ${BROWSER} ${CAVING} ${DB} ${GIS} ${GRAPHICS} 
 dnf group install -y "Books and Guides" "C Development Tools and Libraries" "Cloud Infrastructure" \
                      "Design Suite" "Development Tools" "Engineering and Scientific" \
                      "Fedora Eclipse" "LibreOffice" "RPM Development Tools" "Security Lab" \
-                     "System Tools" "Virtualization"
+                     "System Tools" "Virtualization" "Cloud Management Tools" "Container Management" \
+                     "Text-based Internet"
 
 systemctl disable avahi-daemon.service sshd.service
 systemctl enable powertop.service
