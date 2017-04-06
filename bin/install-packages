@@ -37,7 +37,7 @@ MEDIA="gstreamer-plugins-good gstreamer-plugins-bad-free-extras gstreamer-plugin
        gstreamer-plugin-crystalhd gstreamer1-vaapi youtube-dl"
 MISC="awscli cinnamon coccinelle docker docker-compose fuse-sshfs \
       gnome-shell-extension-alternate-tab gnome-shell-extension-remove-bluetooth-icon \
-      gnome-tweak-tool kernel-devel nasm perl-File-Slurp perl-Template-Toolkit qrencode \
+      gnome-tweak-tool golang kernel-devel nasm perl-File-Slurp perl-Template-Toolkit qrencode \
       ShellCheck gcc-arm-linux-gnu ncurses-devel openssl-devel elfutils-libelf-devel \
       python3-PyYAML screen"
 NETWORK_TOOLS="nmap wireshark wireshark-gnome"
