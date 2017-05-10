@@ -47,7 +47,7 @@ SHOTWELL_DEVEL="autoconf-archive libgphoto2-devel vala libgee-devel libgexiv2-de
                 gstreamer1-devel gstreamer1-plugins-base-devel gtk3-devel libgudev1-devel \
                 LibRaw-devel libsoup-devel libxml2 rest-devel sqlite-devel libsqlite3x-devel \
                 webkitgtk4-devel gnome-doc-utils json-glib-devel yelp-tools \
-                libappstream-glib-devel libtool gcr-devel libgdata-devel"
+                libappstream-glib-devel libtool gcr-devel libgdata-devel gettext-devel"
 SYSTOOLS="colorhug-client gcc gcc-c++ inxi jq kubernetes-client ltrace strace livecd-tools lsof \
           paris-traceroute rfkill rpmdevtools smartmontools powerline powertop redhat-lsb-core
           selinux-policy-sandbox sharutils sparse speedtest-cli tofrodos vim-plugin-powerline \
