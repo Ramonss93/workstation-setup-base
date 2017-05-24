@@ -33,8 +33,8 @@ GRAPHICS="exiv2 gimp gscan2pdf hugin ImageMagick inkscape intel-gpu-tools libsan
 IM="finch pidgin"
 JAVA="eclipse-color-theme eclipse-jdt eclipse-mpc eclipse-linuxtools java-1.8.0-openjdk \
       java-1.8.0-openjdk-devel java-1.8.0-openjdk-javadoc java-1.8.0-openjdk-src"
-MEDIA="gstreamer-plugins-good gstreamer-plugins-bad-free-extras gstreamer-plugins-bad-free \
-       gstreamer-plugin-crystalhd gstreamer1-vaapi youtube-dl"
+MEDIA="avidemux gstreamer-plugins-good gstreamer-plugins-bad-free-extras \
+       gstreamer-plugins-bad-free gstreamer-plugin-crystalhd gstreamer1-vaapi youtube-dl"
 MISC="awscli cinnamon coccinelle docker docker-compose fuse-sshfs \
       gnome-shell-extension-alternate-tab gnome-shell-extension-remove-bluetooth-icon \
       gnome-tweak-tool golang jmtpfs kernel-devel nasm perl-File-Slurp perl-Template-Toolkit
