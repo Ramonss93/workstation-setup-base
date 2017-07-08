@@ -52,8 +52,8 @@ SYSTOOLS="colorhug-client gcc gcc-c++ inxi jq kubernetes-client ltrace strace li
           paris-traceroute rfkill rpmdevtools smartmontools powerline powertop redhat-lsb-core
           selinux-policy-sandbox sharutils sparse speedtest-cli tofrodos vim-plugin-powerline \
           wipe x11vnc"
-TEX="texlive-changepage texlive-morefloats texlive-hyphenat texlive-blindtext texlive-adjustbox \
-     texlive-helvetic.noarch"
+TEX="latex2html texlive-changepage texlive-morefloats texlive-hyphenat texlive-blindtext \
+     texlive-adjustbox texlive-helvetic.noarch"
 VIRT="libvirt-daemon-kvm python3-boto python3-boto3 virt-manager"
 
 dnf install -y ${APPS} ${ARDUINO} ${BROWSER} ${CAVING} ${DB} ${GIS} ${GRAPHICS} \
