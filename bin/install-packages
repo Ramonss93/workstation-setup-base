@@ -33,7 +33,7 @@ GRAPHICS="exiv2 gimp gscan2pdf hugin ImageMagick inkscape intel-gpu-tools libsan
 IM="finch pidgin"
 JAVA="eclipse-color-theme eclipse-jdt eclipse-mpc eclipse-linuxtools java-1.8.0-openjdk \
       java-1.8.0-openjdk-devel java-1.8.0-openjdk-javadoc java-1.8.0-openjdk-src"
-MEDIA="avidemux gstreamer-plugins-good gstreamer-plugins-bad-free-extras \
+MEDIA="gstreamer-plugins-good gstreamer-plugins-bad-free-extras \
        gstreamer-plugins-bad-free gstreamer-plugin-crystalhd gstreamer1-vaapi youtube-dl"
 MISC="awscli cinnamon coccinelle docker docker-compose fuse-sshfs \
       gnome-shell-extension-alternate-tab gnome-shell-extension-remove-bluetooth-icon \
@@ -119,12 +119,12 @@ if [ "${RPM_FUSION_FREE_INSTALLED}" = '0' ] ; then
 	rpm -Uvh "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_RELEASE}.noarch.rpm"
 	echo "Keys are at http://rpmfusion.org/keys"
 	echo ""
-	echo "Importing GPG key 0x6806A9CB:"
-	echo " Userid     : \"RPM Fusion free repository for Fedora (25) <rpmfusion-buildsys@lists.rpmfusion.org>\""
-	echo " Fingerprint: 286F 52F7 E9D4 7B46 3EAD D8AB A1E5 4A0F 6806 A9CB"
-	echo " From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-25"
+	echo "Importing GPG key 0x9690E4AF:"
+	echo " Userid     : \"RPM Fusion free repository for Fedora (26) <rpmfusion-buildsys@lists.rpmfusion.org>\""
+	echo " Fingerprint: E4EE E113 33C9 3091 8D8E 638D 20C7 C9D6 9690 E4AF"
+	echo " From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-26"
 	dnf update
 fi
 
-dnf install -y gstreamer-plugins-bad gstreamer-plugins-ugly gstreamer1-libav gstreamer-ffmpeg \
+dnf install -y avidemux gstreamer-plugins-bad gstreamer-plugins-ugly gstreamer1-libav gstreamer-ffmpeg \
                mplayer mencoder exfat-utils ffmpeg fuse-exfat ffmpegthumbnailer x264
