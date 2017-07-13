@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# https://fedoramagazine.org/safe-eyes-redshift/
-redshift -l 39.629166:-79.9561111 -t 5600:3400
