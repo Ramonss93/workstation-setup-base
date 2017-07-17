@@ -81,6 +81,7 @@ ${USER} hard nofile 10240
 __EOF__
 
 echo "blacklist uvcvideo" > /etc/modprobe.d/blacklist-uvcvideo.conf
+echo "blacklist hid_multitouch" > /etc/modprobe.d/blacklist-touchscreen.conf
 
 cat > /etc/fuse.conf << __EOF__
 user_allow_other
