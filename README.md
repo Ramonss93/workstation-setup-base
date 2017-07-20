@@ -1,6 +1,6 @@
 # Base Workstation Setup
 
-This is my base Fedora 25 workstation setup with any sensitive information removed.
+This is my base Fedora 26 workstation setup with any sensitive information removed.
 I've used these scripts since Fedora 18 came out to automatically provision my
 workstation with a fresh install of Fedora. There are two scripts that need to be
 ran:
